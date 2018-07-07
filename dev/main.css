@@ -22,13 +22,15 @@
 }
 
 .bar {
+    padding-top: 2em;
     display: flex;
     align-items: center;
     width:100%;
+    text-align: center;
 }
 
 .choice {
-    width: 10em;
+    width: 5em;
 }
 
 .choice circle {
