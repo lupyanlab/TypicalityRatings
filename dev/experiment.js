@@ -90,7 +90,7 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
         </div>
         `;
 
-    const choices = ["1", "2", "3", "4", "5", "6", "7"];
+    const choices = ["1", "2", "3", "4", "5"];
     let circlesSvgs = choices.map(choice => {
       return `
             <svg class="choice" viewBox="0 0 100 100">
