@@ -3,15 +3,15 @@
 You must have nodjs installed: https://nodejs.org. Make sure Python 2 is installed.
 
 ```
-git clone https://github.com/kmui2/Image-Similarity-Experiment
-cd Image-Similarity-Experiment
+git clone https://github.com/lupyanlab/TypicalityRatings
+cd TypicalityRatings
 sudo npm install -g nodemon
 npm install
 npm start
 ```
 
 When making changes, the html and javascript is in the dev/ directory. To make sure the prod/ (production) directory is
-updated while editing the dev/ directory, install gulp taskrunner globally and run the gulp watch command. 
+updated while editing the dev/ directory, install gulp taskrunner globally and run the gulp watch command.
 
 ```
 sudo npm install -g gulp
@@ -28,4 +28,4 @@ gulp prod
 npm prod
 ```
 
-Then, go to http://localhost:7070
+Then, go to http://localhost:7071
