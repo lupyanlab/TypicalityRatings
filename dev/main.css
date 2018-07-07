@@ -5,13 +5,51 @@
 }
 
 #scale{
-      position:absolute;  
+    position:absolute;  
     z-index:1;
 }
 
 #canvas{
-      position:relative;
-      width:800px;
-      height:136.97px;  
+    position:relative;
+    width:800px;
+    height:136.97px;  
     z-index:20;
+}
+
+.jspsych-single-stim-stimulus {
+    display: flex;
+    flex-direction: column;
+}
+
+.bar {
+    display: flex;
+    align-items: center;
+    width:100%;
+}
+
+.choice {
+    width: 10em;
+}
+
+.choice circle {
+    r: 1.1em;
+    cx: 50%;
+    cy: 30%;
+    stroke: black;
+    stroke-width: 0.25em;
+    content: 1;
+}
+
+.choice .empty-circle {
+    fill: transparent;
+}
+
+.choice .filled-circle {
+    fill: red;
+}
+
+.choice text {
+    transform: translate(42%, 70%);
+    font: bold 30px sans-serif;
+    alignment-baseline: central;
 }
