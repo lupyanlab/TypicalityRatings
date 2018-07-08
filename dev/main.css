@@ -34,36 +34,29 @@
     height: 8em;
     font-size: 1em;
     font-family: sans-serif;
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.choice div {
-  position: absolute;
-  top: 65%;
+.choice .text {
   border-top: solid;
   padding-top: 0.5em;
   line-height: 1.25em;
 }
 
-.choice svg {
-    position: absolute;
-    top: 0;
-    left: 0;
+.circle {
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    border: solid;
+    margin-bottom: 0.5em;
 }
 
-.choice circle {
-    r: 0.7em;
-    cx: 50%;
-    cy: 50%;
-    stroke: black;
-    stroke-width: 0.15em;
-    content: 1;
+.circle.empty-circle {
+    background-color: transparent;
 }
 
-.choice .empty-circle {
-    fill: transparent;
-}
-
-.choice svg .filled-circle {
-    fill: red;
+.circle.filled-circle {
+    background-color: red;
 }

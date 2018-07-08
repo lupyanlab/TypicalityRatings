@@ -112,20 +112,18 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
       "Right image more typical",
     ];
     
-    let circlesSvgs = choices.map(choice => {
+    let circles = choices.map(choice => {
       return `
         <div class="choice">
-          <svg viewBox="0 0 100 100">
-              <circle class="empty-circle"/>
-          </svg>
-          <div>${choice}</div>
+          <div class="circle empty-circle" />
+          <div class="text">${choice}</div>
         </div>
         `;
     });
 
     let prompt = `
         <div class="bar">
-            ${circlesSvgs.join("")}
+            ${circles.join("")}
         </div>
     `;
 
@@ -173,30 +171,26 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
       stimulus: stimulus,
 
       prompt: function() {
-        const circlesSvgs = choices.map((choice, index) => {
+        const circles = choices.map((choice, index) => {
           if (choice == response.choice) {
             return `
                   <div class="choice">
-                    <svg viewBox="0 0 100 100">
-                        <circle class="filled-circle"/>
-                    </svg>
-                    <div>${choice}</div>
+                    <div class="circle filled-circle"/>
+                    <div class="text">${choice}</div>
                   </div>
                 `;
           }
           return `
             <div class="choice">
-              <svg viewBox="0 0 100 100">
-                  <circle class="empty-circle"/>
-              </svg>
-              <div>${choice}</div>
+              <div class="circle empty-circle" />
+              <div class="text">${choice}</div>
             </div>
             `;
         });
 
         const prompt = `
             <div class="bar">
-                ${circlesSvgs.join("")}
+                ${circles.join("")}
             </div>
         `;
         return prompt;
