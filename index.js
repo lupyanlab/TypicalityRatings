@@ -7,10 +7,12 @@ const csvWriter = require("csv-write-stream");
 const _ = require("lodash");
 const bodyParser = require("body-parser");
 const csv = require("csvtojson");
+const compression = require('compression')
 
 let app = express();
 let writer = csvWriter({ sendHeaders: false });
 
+app.use(compression())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -79,6 +81,7 @@ app.post("/data", function(req, res) {
   // Parses the trial response data to csv
   let response = req.body;
   let path = "data/" + response.subjCode + "_data.csv";
+  console.log('Data written to ' + path);
   let headers = Object.keys(response);
   if (!fs.existsSync(path)) writer = csvWriter({ headers: headers });
   else writer = csvWriter({ sendHeaders: false });
