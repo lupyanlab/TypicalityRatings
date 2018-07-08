@@ -1,4 +1,0 @@
-subjCode,workerId,assignmentId,hitId,seed,Category,Subcategory1,Subcategory2,firstStimPosition,secondStimPosition,pic1,pic2,expTimer,response,trial_number,rt,choice
-subjCode,workerId,assignmentId,hitId,19,Dogs,mastiff,welsh,right,left,mastiff__n02108254_10947_obj1,welsh__n02112826_9485_obj1,42.655,1,2,34595,Left image much more typical
-subjCode,workerId,assignmentId,hitId,19,Cars,racecar,sportscar,right,left,racing__n04037443_33,sports__n04285008_39,51.128,1,3,7459,Left image much more typical
-subjCode,workerId,assignmentId,hitId,19,Cars,antique,mini,right,left,antique__n03777568_24,mini__n03770085_20,52.424,2,4,290,Left image slightly more typical
