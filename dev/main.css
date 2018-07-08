@@ -42,6 +42,7 @@
   top: 65%;
   border-top: solid;
   padding-top: 0.5em;
+  line-height: 1.25em;
 }
 
 .choice svg {
