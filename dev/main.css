@@ -16,29 +16,44 @@
     z-index:20;
 }
 
-.jspsych-single-stim-stimulus {
-    display: flex;
-    flex-direction: column;
-}
-
 .bar {
     padding-top: 2em;
     display: flex;
     align-items: center;
     width:100%;
     text-align: center;
+    justify-content: center;
+    align-items: stretch;
 }
 
+
+
 .choice {
-    width: 5em;
+    width: 10em;
+    height: 8em;
+    font: bold 1em sans-serif;
+    font-size: 1em;
+    font-family: sans-serif;
+    position: relative;
+}
+
+.choice div {
+  position: absolute;
+  top: 75%;
+}
+
+.choice svg {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .choice circle {
-    r: 1.1em;
+    r: 0.7em;
     cx: 50%;
-    cy: 30%;
+    cy: 50%;
     stroke: black;
-    stroke-width: 0.25em;
+    stroke-width: 0.15em;
     content: 1;
 }
 
@@ -46,12 +61,6 @@
     fill: transparent;
 }
 
-.choice .filled-circle {
+.choice svg .filled-circle {
     fill: red;
-}
-
-.choice text {
-    transform: translate(42%, 70%);
-    font: bold 30px sans-serif;
-    alignment-baseline: central;
 }
