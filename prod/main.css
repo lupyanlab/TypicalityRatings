@@ -45,7 +45,7 @@
   line-height: 1.25em;
 }
 
-.circle {
+.choice-circle {
     width: 1.5em;
     height: 1.5em;
     border-radius: 50%;
@@ -53,10 +53,14 @@
     margin-bottom: 0.5em;
 }
 
-.circle.empty-circle {
+.choice-circle.empty-circle {
     background-color: transparent;
 }
 
-.circle.filled-circle {
+.choice-circle.filled-circle {
     background-color: red;
+}
+
+.sv_body {
+    text-align: left;
 }
