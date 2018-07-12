@@ -15,10 +15,32 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
     hitId: hitId
   });
 
+  // sample function that might be used to check if a subject has given
+  // consent to participate.
+  var check_consent = function (elem) {
+    if ($('#consent_checkbox').is(':checked')) {
+        return true;
+    }
+    else {
+        alert("If you wish to participate, you must check the box next to the statement 'I agree to participate in this study.'");
+        return false;
+    }
+    return false;
+  };
+  // declare the block.
+  var consent = {
+    type: 'external-html',
+    url: "../dev/consent.html",
+    cont_btn: "start",
+    check_fn: check_consent
+  };
+
+  // timeline.push(consent);
+
   let welcome_block = {
-    type: "text",
-    cont_key: " ",
-    text: `<h1>TypicalityRatings</h1>
+    type: "html-keyboard-response",
+    choices: [32],
+    stimulus: `<h1>TypicalityRatings</h1>
         <p>Welcome to the experiment. Thank you for participating! Press SPACE to begin.</p>`
   };
 
@@ -29,8 +51,8 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
 
   let instructions = {
     type: "instructions",
-    key_forward: " ",
-    key_backward: 8,
+    key_forward: 'space',
+    key_backward: 'backspace',
     pages: [
       `<p>In this experiment, you will see two drawings and rate their typicality from 1 to 5.
             </p> ${continue_space}`,
@@ -86,14 +108,6 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
     }
 
     let stimulus = `
-        <canvas width="800px" height="25px" id="bar"></canvas>
-        <script>
-            var barCanvas = document.getElementById('bar');
-            var barCtx = barCanvas.getContext('2d');
-            barCtx.roundRect(0, 0, barCanvas.width, barCanvas.height, 20).stroke();
-            barCtx.roundRect(0, 0, barCanvas.width*${trial_number / num_trials}, barCanvas.height, 20).fill();
-        </script>
-        <h5 style="text-align:center;">Trial ${trial_number} of ${num_trials}</h5>
         <div style="width:100%;">
             <div style="width:50%;text-align:center;float:left;">
                 <img src="images/${leftPic}.png" alt="${leftPic}" height="200px" align="middle" style="max-width:400px;"/> 
@@ -115,7 +129,7 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
     let circles = choices.map(choice => {
       return `
         <div class="choice">
-          <div class="circle empty-circle" />
+          <div class="choice-circle empty-circle"></div>
           <div class="text">${choice}</div>
         </div>
         `;
@@ -129,8 +143,7 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
 
     // Picture Trial
     let pictureTrial = {
-      type: "single-stim",
-      is_html: true,
+      type: "html-keyboard-response",
       choices: choices.map((choice, index) => {
         return `${index + 1}`;
       }),
@@ -163,9 +176,8 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
 
     // let subject view their choice
     let breakTrial = {
-      type: "single-stim",
-      is_html: true,
-      timing_response: 1000,
+      type: "html-keyboard-response",
+      trial_duration: 1000,
       response_ends_trial: false,
 
       stimulus: stimulus,
@@ -175,18 +187,19 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
           if (choice == response.choice) {
             return `
                   <div class="choice">
-                    <div class="circle filled-circle"/>
+                    <div class="choice-circle filled-circle"></div>
                     <div class="text">${choice}</div>
                   </div>
                 `;
           }
           return `
             <div class="choice">
-              <div class="circle empty-circle" />
+              <div class="choice-circle empty-circle"></div>
               <div class="text">${choice}</div>
             </div>
             `;
         });
+        console.log(circles);
 
         const prompt = `
             <div class="bar">
@@ -200,6 +213,68 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
 
     trial_number++;
   });
+
+
+  let questionsInstructions = {
+    type: "instructions",
+    key_forward: 'space',
+    key_backward: 'backspace',
+    pages: [
+        `<p class="lead">This is a filler for instructions for the questions.
+        </p> ${continue_space}`,
+    ]
+  };
+
+  timeline.push(questionsInstructions);
+
+  let demographicsQuestions = [
+      { type: "radiogroup", name: "gender", isRequired: true, title: "What is your gender?", choices: ["Male", "Female", "Other", "Perfer not to say"] },
+
+      { type: "radiogroup", name: "native", isRequired: true, title: "Are you a native English speaker", choices: ["Yes", "No"] },
+      { type: "text", name: "native language", visibleIf: "{native}='No'", title: "Please indicate your native language or languages:" },
+
+      { type: "text", name: "languages", title: "What other languages do you speak?" },
+
+      { type: "text", name: "age", title: "What is your age?", width: "auto" },
+
+      { type: "radiogroup", name: "degree", isRequired: true, title: "What is the highest degree or level of shcool you have completed/ If currently enrolled, highest degree received.", choices: ["Less than high school", "High school diploma", "Some college, no degree", "associates|Associate's degree", "bachelors|Bachelor's degree", "masters|Master's degree", "PhD, law, or medical degree", "Prefer not to say"] },
+      { type: "text", name: "favorite hs subject", visibleIf: "{degree}='Less than high school' or {degree}='High school diploma' or {degree}='Some college, no degree'", title: "What was your favorite subject in high school?" },
+      { type: "text", name: "college", visibleIf: "{degree}='associates' or {degree}='bachelors' or {degree}='masters' or {degree}='PhD, law, or medical degree'", title: "What did you study in college?" },
+      { type: "text", name: "grad", visibleIf: "{degree}='masters' or {degree}='PhD, law, or medical degree'", title: "What did you study in graduate school?" },
+  ]
+
+  let demographicsTrial = {
+      type: 'surveyjs',
+      questions: demographicsQuestions,
+      on_finish: function (data) {
+          let demographicsResponses = data.response;
+          console.log(demographicsResponses);
+          let demographics = Object.assign({ subjCode }, demographicsResponses);
+          // POST demographics data to server
+          $.ajax({
+              url: 'http://' + document.domain + ':' + PORT + '/demographics',
+              type: 'POST',
+              contentType: 'application/json',
+              data: JSON.stringify(demographics),
+              success: function () {
+              }
+          })
+
+          let endmessage = `
+              <p class="lead">Thank you for participating! Your completion code is <strong>${participantID}</strong>. Copy and paste this in 
+              MTurk to get paid. If you have any questions or comments, please email jsulik@wisc.edu.</p>
+              
+              <h3>Debriefing </h3>
+              <p class="lead">
+              Thank you for your participation. The study is designed to collect information about the different ways 
+              in which people typically represent thoughts in their mind. The responses will be used in the 
+              development of a shorter questionnaire to assess differences in these representations. 
+              </p>
+              `
+          jsPsych.endExperiment(endmessage);
+      }
+  };
+  timeline.push(demographicsTrial);
 
   let endmessage = `Thank you for participating! Your completion code is ${participantID}. Copy and paste this in 
         MTurk to get paid. If you have any questions or comments, please email jsulik@wisc.edu.`;
@@ -225,13 +300,10 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
 
   function startExperiment() {
     jsPsych.init({
-      default_iti: 0,
       timeline: timeline,
       fullscreen: FULLSCREEN,
       show_progress_bar: true,
-      on_finish: function(data) {
-        jsPsych.endExperiment(endmessage);
-      }
+      auto_update_progress_bar: false
     });
   }
 }

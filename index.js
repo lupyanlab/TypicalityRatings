@@ -7,7 +7,8 @@ const csvWriter = require("csv-write-stream");
 const _ = require("lodash");
 const bodyParser = require("body-parser");
 const csv = require("csvtojson");
-const compression = require('compression')
+const compression = require('compression');
+const jsonfile = require('jsonfile');
 
 let app = express();
 let writer = csvWriter({ sendHeaders: false });
@@ -49,12 +50,8 @@ app.post("/trials", function(req, res) {
   let subjCode = req.body.subjCode;
   console.log("subjCode received is " + subjCode);
 
-  // Runs genTrial python script with subjCode arg
-  PythonShell.defaultOptions = { args: [subjCode] };
-  PythonShell.run("generateTrials.py", function(err, results) {
-    if (err) throw err;
+  if (fs.existsSync("trials/" + subjCode + "_trials.csv")) {
     let trials = [];
-
     // Reads generated trial csv file
     csv()
       .fromFile("trials/" + subjCode + "_trials.csv")
@@ -71,24 +68,131 @@ app.post("/trials", function(req, res) {
         res.send({ success: true, trials: trials });
         console.log("finished parsing csv");
       });
-  });
+  } else {
+    // Runs genTrial python script with subjCode arg
+    PythonShell.defaultOptions = { args: [subjCode] };
+    PythonShell.run("generateTrials.py", function(err, results) {
+      if (err) throw err;
+      let trials = [];
+  
+      // Reads generated trial csv file
+      csv()
+        .fromFile("trials/" + subjCode + "_trials.csv")
+        // Push all trials to array
+        .on("json", jsonObj => {
+          trials.push(jsonObj);
+        })
+        // Send trials array when finished
+        .on("done", error => {
+          if (error) {
+            res.send({ success: false });
+            throw error;
+          }
+          res.send({ success: true, trials: trials });
+          console.log("finished parsing csv");
+        });
+    });
+  }
+
 });
 
 // POST endpoint for receiving trial responses
-app.post("/data", function(req, res) {
-  console.log("data post request received");
+app.post('/data', function (req, res, next) {
+  console.log('data post request received');
 
-  // Parses the trial response data to csv
+  // Create new data file if does not exist
   let response = req.body;
-  let path = "data/" + response.subjCode + "_data.csv";
-  console.log('Data written to ' + path);
-  let headers = Object.keys(response);
-  if (!fs.existsSync(path)) writer = csvWriter({ headers: headers });
-  else writer = csvWriter({ sendHeaders: false });
+  fs.access('./data', (err) => {
+    if (err && err.code === 'ENOENT') {
+      fs.mkdir('./data', () => {
+        next();
+      });
+    }
+    else next();
+  });
 
-  writer.pipe(fs.createWriteStream(path, { flags: "a" }));
-  writer.write(response);
-  writer.end();
+},
+  (req, res, next) => {
+    let response = req.body;
+    let path = 'data/' + response.subjCode + '_data.json';
+    fs.access(path, (err) => {
+      if (err && err.code === 'ENOENT') {
+        jsonfile.writeFile(path, { trials: [] }, (err) => {
+          if (err) {
+            res.send({ success: false });
+            return next(err);
+          }
+          next();
+        })
+      }
+      else next();
+    })
+  },
+  (req, res, next) => {
+    // Write response to json
+    let response = req.body;
+    let path = 'data/' + response.subjCode + '_data.json';
+    console.log(response);
+    jsonfile.readFile(path, (err, obj) => {
+      if (err) {
+        res.send({ success: false });
+        return next(err);
+      }
+      obj.trials.push(response);
+      jsonfile.writeFile(path, obj, (err) => {
+        if (err) {
+          res.send({ success: false });
+          return next(err);
+        }
+        res.send({ success: true });
+      })
+    })
+  });
 
-  res.send({ success: true });
-});
+
+// POST endpoint for receiving demographics responses
+app.post('/demographics', function (req, res, next) {
+  let demographics = req.body;
+  console.log('demographics post request received');
+  console.log(demographics);
+  let path = 'demographics/' + demographics.subjCode + '_demographics.csv';
+
+  fs.access('./demographics', (err) => {
+    if (err && err.code === 'ENOENT') {
+      fs.mkdir('./demographics', () => {
+        next();
+      });
+    }
+    else next();
+  });
+
+},
+  (req, res, next) => {
+    let demographics = req.body;
+    let path = 'demographics/' + demographics.subjCode + '_demographics.csv';
+    fs.access(path, (err) => {
+      if (err && err.code === 'ENOENT') {
+        jsonfile.writeFile(path, { trials: [] }, (err) => {
+          if (err) {
+            res.send({ success: false });
+            return next(err);
+          }
+          next();
+        })
+      }
+      else next();
+    })
+  }, (req, res, next) => {
+    // Parses the trial response data to csv
+    let demographics = req.body;
+    let path = 'demographics/' + demographics.subjCode + '_demographics.csv';
+
+    let headers = Object.keys(demographics);
+    writer = csvWriter({ headers: headers });
+
+    writer.pipe(fs.createWriteStream(path, { flags: 'w' }));
+    writer.write(demographics);
+    writer.end();
+
+    res.send({ success: true });
+  });
