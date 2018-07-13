@@ -113,40 +113,19 @@ app.post('/data', function (req, res, next) {
 
 },
   (req, res, next) => {
+    // Parses the trial response data to csv
     let response = req.body;
-    let path = 'data/' + response.subjCode + '_data.json';
-    fs.access(path, (err) => {
-      if (err && err.code === 'ENOENT') {
-        jsonfile.writeFile(path, { trials: [] }, (err) => {
-          if (err) {
-            res.send({ success: false });
-            return next(err);
-          }
-          next();
-        })
-      }
-      else next();
-    })
-  },
-  (req, res, next) => {
-    // Write response to json
-    let response = req.body;
-    let path = 'data/' + response.subjCode + '_data.json';
-    console.log(response);
-    jsonfile.readFile(path, (err, obj) => {
-      if (err) {
-        res.send({ success: false });
-        return next(err);
-      }
-      obj.trials.push(response);
-      jsonfile.writeFile(path, obj, (err) => {
-        if (err) {
-          res.send({ success: false });
-          return next(err);
-        }
-        res.send({ success: true });
-      })
-    })
+    let path = "data/" + response.subjCode + "_data.csv";
+    console.log('Data written to ' + path);
+    let headers = Object.keys(response);
+    if (!fs.existsSync(path)) writer = csvWriter({ headers: headers });
+    else writer = csvWriter({ sendHeaders: false });
+  
+    writer.pipe(fs.createWriteStream(path, { flags: "a" }));
+    writer.write(response);
+    writer.end();
+  
+    res.send({ success: true });
   });
 
 
