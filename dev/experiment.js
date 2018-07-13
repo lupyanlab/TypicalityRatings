@@ -37,32 +37,6 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
 
   timeline.push(consent);
 
-  // let welcome_block = {
-  //   type: "html-keyboard-response",
-  //   choices: [32],
-  //   stimulus: `<h1>TypicalityRatings</h1>
-  //       <p>Welcome to the experiment. Thank you for participating! Press SPACE to begin.</p>`
-  // };
-
-  // timeline.push(welcome_block);
-
-  // let continue_space =
-  //   "<div class='right small'>(press SPACE to continue, or BACKSPACE to head back)</div>";
-
-  // let instructions = {
-  //   type: "instructions",
-  //   key_forward: 'space',
-  //   key_backward: 'backspace',
-  //   pages: [
-  //     `<p>On each page you will see two pictures from the same category e.g., two cats. Your task is simply to decide which of the two pictures is the best example of your idea or image of what the category is. The categories you will see are <b>cats, dogs, birds, fish, cars, trains, planes and boats</b>.
-  //     <p><b>Use the keys 1-5 to respond</b>. You will be asked to about 225 judgments. Estimated total time is 5-6 minutes. At the end, you will get a completion code.
-  //           </p> ${continue_space}`
-  //   ]
-  // };
-
-  // timeline.push(instructions);
-
-
   let continue_space =
     "<div class='right small'>Press SPACE to continue.</div>";
 
@@ -238,8 +212,8 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
     key_forward: 'space',
     key_backward: 'backspace',
     pages: [
-        `<p class="lead">This is a filler for instructions for the questions.
-        </p> ${continue_space}`,
+        `<p class="lead">We'll now ask you a few demographic questions and we'll be done!
+          </p> ${continue_space}`,
     ]
   };
 
@@ -252,8 +226,14 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
       { type: "text", name: "languages", title: "What other languages do you speak?" },
       { type: "text", name: "age", title: "What is your age?", width: "auto" },
       { type: "radiogroup", name: "degree", isRequired: true, title: "What is the highest degree or level of school you have completed. If currently enrolled, indicate highest degree received.", choices: ["Less than high school", "High school diploma", "Some college, no degree", "associates|Associate's degree", "bachelors|Bachelor's degree", "masters|Master's degree", "PhD, law, or medical degree", "Prefer not to say"] },
-      { type: "radiogroup", name: "cats_experience", isRequired: true, title: "How much do you know about <b>cats</b>", choices: ["(1)", "(2)"] }
-
+      { type: "radiogroup", name: "cats_experience", isRequired: true, title: "How much do you know about cats<?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] },
+      { type: "radiogroup", name: "dogs_experience", isRequired: true, title: "How much do you know about dogs<?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] },
+      { type: "radiogroup", name: "birds_experience", isRequired: true, title: "How much do you know about birds<?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] },
+      { type: "radiogroup", name: "fish_experience", isRequired: true, title: "How much do you know about fish<?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] },
+      { type: "radiogroup", name: "cars_experience", isRequired: true, title: "How much do you know about cars<?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] },
+      { type: "radiogroup", name: "trains_experience", isRequired: true, title: "How much do you know about trains<?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] },
+      { type: "radiogroup", name: "planes_experience", isRequired: true, title: "How much do you know about planes<?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] },
+      { type: "radiogroup", name: "boats_experience", isRequired: true, title: "How much do you know about boats<?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] }
   ]
 
   let demographicsTrial = {
