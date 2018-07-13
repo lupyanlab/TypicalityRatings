@@ -79,7 +79,7 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
 
   timeline.push(instructions);
 
-  let trial_number = 220;
+  let trial_number = 1;
   let images = [];
   let num_trials = trials.length;
 
@@ -193,7 +193,7 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
     // let subject view their choice
     let breakTrial = {
       type: "html-keyboard-response",
-      trial_duration: 1000,
+      trial_duration: 5,
       response_ends_trial: false,
 
       stimulus: stimulus,
