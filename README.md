@@ -5,27 +5,21 @@ You must have nodjs installed: https://nodejs.org. Make sure Python 2 is install
 ```
 git clone https://github.com/lupyanlab/TypicalityRatings
 cd TypicalityRatings
-sudo npm install -g nodemon
 npm install
 npm start
 ```
 
-When making changes, the html and javascript is in the dev/ directory. To make sure the prod/ (production) directory is
-updated while editing the dev/ directory, install gulp taskrunner globally and run the gulp watch command.
+When making changes, the html and javascript is in the `dev/` directory. To make sure the `prod/` (production) directory is
+updated while editing the `dev/` directory, run the watch command.
 
 ```
-sudo npm install -g gulp
-gulp watch
+npm run watch
 ```
 
-If you just need to build prod/ , then just call either of these commands:
+If you just need to build `prod/` , then use this command:
 
 ```
-gulp prod
-```
-
-```
-npm prod
+npm run prod
 ```
 
 Then, go to http://localhost:7071
