@@ -30,12 +30,12 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
   // declare the block.
   var consent = {
     type: 'external-html',
-    url: "../dev/consent.html",
+    url: "./consent.html",
     cont_btn: "start",
     check_fn: check_consent
   };
 
-  // timeline.push(consent);
+  timeline.push(consent);
 
   let welcome_block = {
     type: "html-keyboard-response",
@@ -54,10 +54,8 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
     key_forward: 'space',
     key_backward: 'backspace',
     pages: [
-      `<p>In this experiment, you will see two drawings and rate their typicality from 1 to 5.
-            </p> ${continue_space}`,
-
-      `<p>Use the 1-5 number keys to select your choice.
+      `<p>On each page you will see two pictures from the same category e.g., two cats. Your task is simply to decide which of the two pictures is the best example of your idea or image of what the category is. The categories you will see are <b>cats, dogs, birds, fish, cars, trains, planes and boats</b>.
+      <p><b>Use the keys 1-5 to respond</b>. You will be asked to about 225 judgments. Estimated total time is 5-6 minutes. At the end, you will get a completion code.
             </p> ${continue_space}`
     ]
   };
@@ -280,7 +278,13 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
   timeline.push(demographicsTrial);
 
   let endmessage = `Thank you for participating! Your completion code is ${participantID}. Copy and paste this in 
-        MTurk to get paid. If you have any questions or comments, please email jsulik@wisc.edu.`;
+        MTurk to get paid. 
+
+        <p>The purpose of this HIT is to assess the extent to which different people agree what makes
+        a particular dog, cat, or car typical.
+        
+        <p>
+        If you have any questions or comments, please email hroebuck@wisc.edu.`;
 
     
   Promise.all(images.map((image, index) => {
