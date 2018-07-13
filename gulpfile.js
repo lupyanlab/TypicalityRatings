@@ -13,8 +13,10 @@ gulp.task('copy', function() {
 gulp.task('switchjs', function() {
     gulp.src('dev/index.html')
         .pipe(htmlreplace({
-            'js': 'prod.js',
-            'form': ''
+            js: {
+                src: [['module', 'prod.js']],
+                tpl: '<script type="%s" src="%s"></script>',
+            },
         }))
         .pipe(gulp.dest('prod'));
 })
