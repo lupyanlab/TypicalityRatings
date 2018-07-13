@@ -1,7 +1,17 @@
 import demographicsQuestions from "./demographics.js";
 
+function disableScrollOnSpacebarPress () {
+  window.onkeydown = function(e) {
+    if (e.keyCode == 32 && e.target == document.body) {
+      e.preventDefault();
+    }
+  };
+}
+
 // Function Call to Run the experiment
 export default (trials, subjCode, workerId, assignmentId, hitId, PORT, FULLSCREEN) => {
+  disableScrollOnSpacebarPress();
+
   let timeline = [];
 
   // Data that is collected for jsPsych
