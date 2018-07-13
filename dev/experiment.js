@@ -37,17 +37,8 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
 
   timeline.push(consent);
 
-  let welcome_block = {
-    type: "html-keyboard-response",
-    choices: [32],
-    stimulus: `<h1>TypicalityRatings</h1>
-        <p>Welcome to the experiment. Thank you for participating! Press SPACE to begin.</p>`
-  };
-
-  timeline.push(welcome_block);
-
   let continue_space =
-    "<div class='right small'>(press SPACE to continue, or BACKSPACE to head back)</div>";
+    "<div class='right small'>Press SPACE to continue.</div>";
 
   let instructions = {
     type: "instructions",
@@ -122,7 +113,7 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
       "Left image slightly more typical", 
       "Both images equally typical", 
       "Right image slightly more typical", 
-      "Right image more typical",
+      "Right image much more typical",
     ];
     
     let circles = choices.map(choice => {
@@ -176,7 +167,7 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
     // let subject view their choice
     let breakTrial = {
       type: "html-keyboard-response",
-      trial_duration: 1000,
+      trial_duration: 5,
       response_ends_trial: false,
 
       stimulus: stimulus,
@@ -221,27 +212,28 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
     key_forward: 'space',
     key_backward: 'backspace',
     pages: [
-        `<p class="lead">This is a filler for instructions for the questions.
-        </p> ${continue_space}`,
+        `<p class="lead">We'll now ask you a few demographic questions and we'll be done!
+          </p> ${continue_space}`,
     ]
   };
 
   timeline.push(questionsInstructions);
 
   let demographicsQuestions = [
-      { type: "radiogroup", name: "gender", isRequired: true, title: "What is your gender?", choices: ["Male", "Female", "Other", "Perfer not to say"] },
-
+      { type: "radiogroup", name: "gender", isRequired: true, title: "What is your gender?", choices: ["Male", "Female", "Other", "Prefer not to say"] },
       { type: "radiogroup", name: "native", isRequired: true, title: "Are you a native English speaker", choices: ["Yes", "No"] },
       { type: "text", name: "native language", visibleIf: "{native}='No'", title: "Please indicate your native language or languages:" },
-
       { type: "text", name: "languages", title: "What other languages do you speak?" },
-
       { type: "text", name: "age", title: "What is your age?", width: "auto" },
-
-      { type: "radiogroup", name: "degree", isRequired: true, title: "What is the highest degree or level of shcool you have completed/ If currently enrolled, highest degree received.", choices: ["Less than high school", "High school diploma", "Some college, no degree", "associates|Associate's degree", "bachelors|Bachelor's degree", "masters|Master's degree", "PhD, law, or medical degree", "Prefer not to say"] },
-      { type: "text", name: "favorite hs subject", visibleIf: "{degree}='Less than high school' or {degree}='High school diploma' or {degree}='Some college, no degree'", title: "What was your favorite subject in high school?" },
-      { type: "text", name: "college", visibleIf: "{degree}='associates' or {degree}='bachelors' or {degree}='masters' or {degree}='PhD, law, or medical degree'", title: "What did you study in college?" },
-      { type: "text", name: "grad", visibleIf: "{degree}='masters' or {degree}='PhD, law, or medical degree'", title: "What did you study in graduate school?" },
+      { type: "radiogroup", name: "degree", isRequired: true, title: "What is the highest degree or level of school you have completed. If currently enrolled, indicate highest degree received.", choices: ["Less than high school", "High school diploma", "Some college, no degree", "associates|Associate's degree", "bachelors|Bachelor's degree", "masters|Master's degree", "PhD, law, or medical degree", "Prefer not to say"] },
+      { type: "radiogroup", name: "cats_experience", isRequired: true, title: "How much do you know about cats<?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] },
+      { type: "radiogroup", name: "dogs_experience", isRequired: true, title: "How much do you know about dogs<?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] },
+      { type: "radiogroup", name: "birds_experience", isRequired: true, title: "How much do you know about birds<?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] },
+      { type: "radiogroup", name: "fish_experience", isRequired: true, title: "How much do you know about fish<?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] },
+      { type: "radiogroup", name: "cars_experience", isRequired: true, title: "How much do you know about cars<?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] },
+      { type: "radiogroup", name: "trains_experience", isRequired: true, title: "How much do you know about trains<?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] },
+      { type: "radiogroup", name: "planes_experience", isRequired: true, title: "How much do you know about planes<?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] },
+      { type: "radiogroup", name: "boats_experience", isRequired: true, title: "How much do you know about boats<?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] }
   ]
 
   let demographicsTrial = {
@@ -261,17 +253,14 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
               }
           })
 
-          let endmessage = `
-              <p class="lead">Thank you for participating! Your completion code is <strong>${participantID}</strong>. Copy and paste this in 
-              MTurk to get paid. If you have any questions or comments, please email jsulik@wisc.edu.</p>
-              
-              <h3>Debriefing </h3>
-              <p class="lead">
-              Thank you for your participation. The study is designed to collect information about the different ways 
-              in which people typically represent thoughts in their mind. The responses will be used in the 
-              development of a shorter questionnaire to assess differences in these representations. 
-              </p>
-              `
+  let endmessage = `Thank you for participating! Your completion code is ${participantID}. Copy and paste this in 
+        MTurk to get paid. 
+
+        <p>The purpose of this HIT is to assess the extent to which different people agree what makes
+        a particular dog, cat, or car typical.
+        
+        <p>
+        If you have any questions or comments, please email hroebuck@wisc.edu.`;
           jsPsych.endExperiment(endmessage);
       }
   };
