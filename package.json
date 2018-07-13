@@ -4,7 +4,7 @@
   "description": "A sample Node.js app using Express 4",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js --ignore 'dev/*' --ignore 'data/*'",
+    "start": "nodemon index.js --ignore 'dev/*' --ignore 'data/*' --ignore `prod/*`",
     "prod": "gulp prod"
   },
   "dependencies": {
