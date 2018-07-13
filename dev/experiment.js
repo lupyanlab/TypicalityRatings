@@ -68,7 +68,7 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
 
   let instructions = {
     type: "instructions",
-    key_forward: 'space,
+    key_forward: 'space',
     key_backward: 'backspace',
     pages: [
       `<p>On each page you will see two pictures from the same category e.g., two cats. Your task is simply to decide which of the two pictures is the best example of your idea or image of what the category is. The categories you will see are <b>cats, dogs, birds, fish, cars, trains, planes and boats</b>.
