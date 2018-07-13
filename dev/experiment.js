@@ -200,7 +200,6 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
             </div>
             `;
         });
-        console.log(circles);
 
         const prompt = `
             <div class="bar">
