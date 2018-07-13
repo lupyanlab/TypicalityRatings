@@ -64,3 +64,9 @@
 .sv_body {
     text-align: left;
 }
+
+.jspsych-content {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+}

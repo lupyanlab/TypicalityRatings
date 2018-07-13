@@ -107,7 +107,8 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
       rightPic = trial.pic2;
     }
 
-    let stimulus = `
+    let stimulus = () => `
+        <h5 style="text-align:center;margin-bottom:20%;margin-top:0;">Trial ${trial_number} of ${num_trials}</h5>
         <div style="width:100%;">
             <div style="width:50%;text-align:center;float:left;">
                 <img src="images/${leftPic}.png" alt="${leftPic}" height="200px" align="middle" style="max-width:400px;"/> 
@@ -116,7 +117,7 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
                 <img src="images/${rightPic}.png" alt="${rightPic}" height="200px" align="middle" style="max-width:400px;width=50%;" />
             </div>
         </div>
-        `;
+    `;
 
     const choices = [
       "Left image much more typical", 
@@ -207,11 +208,14 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
             </div>
         `;
         return prompt;
-      }
+      },
+      
+      on_finish: function() {
+        trial_number++;
+        jsPsych.setProgressBar((trial_number - 1) / num_trials);
+      },
     };
     timeline.push(breakTrial);
-
-    trial_number++;
   });
 
 
