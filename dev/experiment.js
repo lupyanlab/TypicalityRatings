@@ -37,21 +37,38 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
 
   timeline.push(consent);
 
-  let welcome_block = {
-    type: "html-keyboard-response",
-    choices: [32],
-    stimulus: `<h1>TypicalityRatings</h1>
-        <p>Welcome to the experiment. Thank you for participating! Press SPACE to begin.</p>`
-  };
+  // let welcome_block = {
+  //   type: "html-keyboard-response",
+  //   choices: [32],
+  //   stimulus: `<h1>TypicalityRatings</h1>
+  //       <p>Welcome to the experiment. Thank you for participating! Press SPACE to begin.</p>`
+  // };
 
-  timeline.push(welcome_block);
+  // timeline.push(welcome_block);
+
+  // let continue_space =
+  //   "<div class='right small'>(press SPACE to continue, or BACKSPACE to head back)</div>";
+
+  // let instructions = {
+  //   type: "instructions",
+  //   key_forward: 'space',
+  //   key_backward: 'backspace',
+  //   pages: [
+  //     `<p>On each page you will see two pictures from the same category e.g., two cats. Your task is simply to decide which of the two pictures is the best example of your idea or image of what the category is. The categories you will see are <b>cats, dogs, birds, fish, cars, trains, planes and boats</b>.
+  //     <p><b>Use the keys 1-5 to respond</b>. You will be asked to about 225 judgments. Estimated total time is 5-6 minutes. At the end, you will get a completion code.
+  //           </p> ${continue_space}`
+  //   ]
+  // };
+
+  // timeline.push(instructions);
+
 
   let continue_space =
-    "<div class='right small'>(press SPACE to continue, or BACKSPACE to head back)</div>";
+    "<div class='right small'>Press SPACE to continue.</div>";
 
   let instructions = {
     type: "instructions",
-    key_forward: 'space',
+    key_forward: 'space,
     key_backward: 'backspace',
     pages: [
       `<p>On each page you will see two pictures from the same category e.g., two cats. Your task is simply to decide which of the two pictures is the best example of your idea or image of what the category is. The categories you will see are <b>cats, dogs, birds, fish, cars, trains, planes and boats</b>.
@@ -62,8 +79,9 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
 
   timeline.push(instructions);
 
-  let trial_number = 1;
+  let trial_number = 220;
   let images = [];
+  let num_trials = trials.length;
   let num_trials = trials.length;
 
   _.forEach(trials, trial => {
@@ -122,7 +140,7 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
       "Left image slightly more typical", 
       "Both images equally typical", 
       "Right image slightly more typical", 
-      "Right image more typical",
+      "Right image much more typical",
     ];
     
     let circles = choices.map(choice => {
@@ -229,19 +247,14 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
   timeline.push(questionsInstructions);
 
   let demographicsQuestions = [
-      { type: "radiogroup", name: "gender", isRequired: true, title: "What is your gender?", choices: ["Male", "Female", "Other", "Perfer not to say"] },
-
+      { type: "radiogroup", name: "gender", isRequired: true, title: "What is your gender?", choices: ["Male", "Female", "Other", "Prefer not to say"] },
       { type: "radiogroup", name: "native", isRequired: true, title: "Are you a native English speaker", choices: ["Yes", "No"] },
       { type: "text", name: "native language", visibleIf: "{native}='No'", title: "Please indicate your native language or languages:" },
-
       { type: "text", name: "languages", title: "What other languages do you speak?" },
-
       { type: "text", name: "age", title: "What is your age?", width: "auto" },
+      { type: "radiogroup", name: "degree", isRequired: true, title: "What is the highest degree or level of school you have completed. If currently enrolled, indicate highest degree received.", choices: ["Less than high school", "High school diploma", "Some college, no degree", "associates|Associate's degree", "bachelors|Bachelor's degree", "masters|Master's degree", "PhD, law, or medical degree", "Prefer not to say"] },
+      { type: "radiogroup", name: "cats_experience", isRequired: true, title: "How much do you know about <b>cats</b>", choices: ["(1)", "(2)"] }
 
-      { type: "radiogroup", name: "degree", isRequired: true, title: "What is the highest degree or level of shcool you have completed/ If currently enrolled, highest degree received.", choices: ["Less than high school", "High school diploma", "Some college, no degree", "associates|Associate's degree", "bachelors|Bachelor's degree", "masters|Master's degree", "PhD, law, or medical degree", "Prefer not to say"] },
-      { type: "text", name: "favorite hs subject", visibleIf: "{degree}='Less than high school' or {degree}='High school diploma' or {degree}='Some college, no degree'", title: "What was your favorite subject in high school?" },
-      { type: "text", name: "college", visibleIf: "{degree}='associates' or {degree}='bachelors' or {degree}='masters' or {degree}='PhD, law, or medical degree'", title: "What did you study in college?" },
-      { type: "text", name: "grad", visibleIf: "{degree}='masters' or {degree}='PhD, law, or medical degree'", title: "What did you study in graduate school?" },
   ]
 
   let demographicsTrial = {
@@ -261,17 +274,14 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
               }
           })
 
-          let endmessage = `
-              <p class="lead">Thank you for participating! Your completion code is <strong>${participantID}</strong>. Copy and paste this in 
-              MTurk to get paid. If you have any questions or comments, please email jsulik@wisc.edu.</p>
-              
-              <h3>Debriefing </h3>
-              <p class="lead">
-              Thank you for your participation. The study is designed to collect information about the different ways 
-              in which people typically represent thoughts in their mind. The responses will be used in the 
-              development of a shorter questionnaire to assess differences in these representations. 
-              </p>
-              `
+  let endmessage = `Thank you for participating! Your completion code is ${participantID}. Copy and paste this in 
+        MTurk to get paid. 
+
+        <p>The purpose of this HIT is to assess the extent to which different people agree what makes
+        a particular dog, cat, or car typical.
+        
+        <p>
+        If you have any questions or comments, please email hroebuck@wisc.edu.`;
           jsPsych.endExperiment(endmessage);
       }
   };
