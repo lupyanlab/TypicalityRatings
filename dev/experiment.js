@@ -82,7 +82,6 @@ function runExperiment(trials, subjCode, workerId, assignmentId, hitId) {
   let trial_number = 220;
   let images = [];
   let num_trials = trials.length;
-  let num_trials = trials.length;
 
   _.forEach(trials, trial => {
     images.push("images/" + trial.pic1 + ".png");
