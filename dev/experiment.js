@@ -179,7 +179,7 @@ export default (trials, subjCode, workerId, assignmentId, hitId, PORT, FULLSCREE
     // let subject view their choice
     let breakTrial = {
       type: "html-keyboard-response",
-      trial_duration: 1000,
+      trial_duration: 10,
       response_ends_trial: false,
 
       stimulus: stimulus,
