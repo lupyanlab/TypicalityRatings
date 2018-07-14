@@ -23,3 +23,8 @@ npm run prod
 ```
 
 Then, go to http://localhost:7071
+
+
+## Switching from CSV to JSON and Vice Versa
+
+Open `fileformat.js` and switch which file format you want the data and demographics in. You **must restart** the node api server (pm2) after making these changes.
