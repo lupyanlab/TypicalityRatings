@@ -1,3 +1,5 @@
+const { DATA_FILE_FORMAT, DEMOGRAPHICS_FILE_FORMAT, CSV_FORMAT, JSON_FORMAT } = require("./fileformat");
+
 // Dependencies
 const express = require("express");
 const path = require("path");
@@ -62,7 +64,7 @@ app.post("/trials", function(req, res) {
       // Send trials array when finished
       .on("done", error => {
         if (error) {
-          res.send({ success: false });
+          res.status(500).send({ success: false });
           throw error;
         }
         res.send({ success: true, trials: trials });
@@ -85,7 +87,7 @@ app.post("/trials", function(req, res) {
         // Send trials array when finished
         .on("done", error => {
           if (error) {
-            res.send({ success: false });
+            res.status(500).send({ success: false });
             throw error;
           }
           res.send({ success: true, trials: trials });
@@ -95,6 +97,47 @@ app.post("/trials", function(req, res) {
   }
 
 });
+
+
+function writeToJSON(req, res, next, folderName) {
+  // Write response to json
+  let response = req.body;
+  let path = `${folderName}/${response.subjCode}_${folderName}.json`;
+  if (!fs.existsSync(path)) {
+    fs.writeFileSync(path, JSON.stringify({ [folderName]: [] }));
+  }
+  console.log('Request body written to ' + path);
+  jsonfile.readFile(path, (err, obj) => {
+    if (err) {
+      res.status(500).send({ success: false });
+      return next(err);
+    }
+    obj[folderName].push(response);
+    jsonfile.writeFile(path, obj, (err) => {
+      if (err) {
+        res.status(500).send({ success: false });
+        return next(err);
+      }
+      res.send({ success: true });
+    })
+  })
+};
+
+function writeToCSV(req, res, next, folderName) {
+  // Parses the trial response data to csv
+  let response = req.body;
+  let path = `${folderName}/${response.subjCode}_${folderName}.csv`;
+  console.log('Request body written to ' + path);
+  let headers = Object.keys(response);
+  if (!fs.existsSync(path)) writer = csvWriter({ headers: headers });
+  else writer = csvWriter({ sendHeaders: false });
+
+  writer.pipe(fs.createWriteStream(path, { flags: "a" }));
+  writer.write(response);
+  writer.end();
+
+  res.send({ success: true });
+}
 
 // POST endpoint for receiving trial responses
 app.post('/data', function (req, res, next) {
@@ -113,19 +156,13 @@ app.post('/data', function (req, res, next) {
 
 },
   (req, res, next) => {
-    // Parses the trial response data to csv
-    let response = req.body;
-    let path = "data/" + response.subjCode + "_data.csv";
-    console.log('Data written to ' + path);
-    let headers = Object.keys(response);
-    if (!fs.existsSync(path)) writer = csvWriter({ headers: headers });
-    else writer = csvWriter({ sendHeaders: false });
-  
-    writer.pipe(fs.createWriteStream(path, { flags: "a" }));
-    writer.write(response);
-    writer.end();
-  
-    res.send({ success: true });
+    if (DATA_FILE_FORMAT == JSON_FORMAT) {
+      writeToJSON(req, res, next, 'data');
+    } else if (DATA_FILE_FORMAT == CSV_FORMAT) {
+      writeToCSV(req, res, next, 'data');
+    } else {
+      res.status(500).send({ success: false, message: "Invalid file format specified. Check fileformat.js."});
+    }
   });
 
 
@@ -134,7 +171,6 @@ app.post('/demographics', function (req, res, next) {
   let demographics = req.body;
   console.log('demographics post request received');
   console.log(demographics);
-  let path = 'demographics/' + demographics.subjCode + '_demographics.csv';
 
   fs.access('./demographics', (err) => {
     if (err && err.code === 'ENOENT') {
@@ -145,33 +181,12 @@ app.post('/demographics', function (req, res, next) {
     else next();
   });
 
-},
-  (req, res, next) => {
-    let demographics = req.body;
-    let path = 'demographics/' + demographics.subjCode + '_demographics.csv';
-    fs.access(path, (err) => {
-      if (err && err.code === 'ENOENT') {
-        jsonfile.writeFile(path, { trials: [] }, (err) => {
-          if (err) {
-            res.send({ success: false });
-            return next(err);
-          }
-          next();
-        })
-      }
-      else next();
-    })
   }, (req, res, next) => {
-    // Parses the trial response data to csv
-    let demographics = req.body;
-    let path = 'demographics/' + demographics.subjCode + '_demographics.csv';
-
-    let headers = Object.keys(demographics);
-    writer = csvWriter({ headers: headers });
-
-    writer.pipe(fs.createWriteStream(path, { flags: 'w' }));
-    writer.write(demographics);
-    writer.end();
-
-    res.send({ success: true });
+    if (DEMOGRAPHICS_FILE_FORMAT == JSON_FORMAT) {
+      writeToJSON(req, res, next, 'demographics');
+    } else if (DEMOGRAPHICS_FILE_FORMAT == CSV_FORMAT) {
+      writeToCSV(req, res, next, 'demographics');
+    } else {
+      res.status(500).send({ success: false, message: "Invalid file format specified. Check fileformat.js."});
+    }
   });
