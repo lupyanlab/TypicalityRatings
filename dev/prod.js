@@ -10,7 +10,6 @@ $(document).ready(function(){
         // DEFINE workerId, hitId, assignmentId HERE
         //////////////////////////////////////////
         let subjCode = $.urlParam('workerId') || 'unknown';
-        let workerId = undefined;
         let assignmentId = undefined;
         let hitId = undefined;
 
@@ -27,7 +26,7 @@ $(document).ready(function(){
                 console.log(data);
                 $("#loading").remove();
 
-                runExperiment(data.trials, subjCode, workerId, assignmentId, hitId, PORT, FULLSCREEN);
+                runExperiment(data.trials, subjCode, assignmentId, hitId, PORT, FULLSCREEN);
             }
         })
     

@@ -9,7 +9,7 @@ function disableScrollOnSpacebarPress () {
 }
 
 // Function Call to Run the experiment
-export default (trials, subjCode='NA', workerId='NA', assignmentId='NA', hitId='NA', PORT, FULLSCREEN) => {
+export default (trials, subjCode='NA', assignmentId='NA', hitId='NA', PORT, FULLSCREEN) => {
   disableScrollOnSpacebarPress();
 
   let timeline = [];
@@ -22,7 +22,6 @@ export default (trials, subjCode='NA', workerId='NA', assignmentId='NA', hitId='
     subject: participantID,
     condition: "explicit",
     group: "shuffled",
-    workerId: workerId,
     assginementId: assignmentId,
     hitId: hitId
   });
@@ -83,7 +82,6 @@ export default (trials, subjCode='NA', workerId='NA', assignmentId='NA', hitId='
     // Empty Response Data to be sent to be collected
     let response = {
       subjCode: subjCode,
-      workerId: workerId,
       assignmentId: assignmentId,
       hitId: hitId,
       seed: trial.seed,
