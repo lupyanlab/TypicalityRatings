@@ -12,6 +12,6 @@ export default [
 	{ type: "radiogroup", name: "cars_experience", colCount: 0, isRequired: true, title: "How much do you know about cars?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] },
 	{ type: "radiogroup", name: "trains_experience", colCount: 0, isRequired: true, title: "How much do you know about trains?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] },
 	{ type: "radiogroup", name: "planes_experience", colCount: 0, isRequired: true, title: "How much do you know about planes?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] },
-	{ type: "radiogroup", name: "boats_experience", colCount: 0, isRequired: true, title: "How much do you know about boats?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] }
+	{ type: "radiogroup", name: "boats_experience", colCount: 0, isRequired: true, title: "How much do you know about boats?", choices: ["(1) Less than an average person", "(2) About the same as average", "(3) More than average", "(4) Much more than average"] },
 	{ type: "text", name: "comments", isRequired: false, title: "If you have any comments for us, please enter them here" },
 ];
