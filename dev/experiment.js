@@ -1,5 +1,28 @@
 import demographicsQuestions from "./demographics.js";
 
+const PORT = 7071;
+const FULLSCREEN = false;
+
+export function getTrials(subjCode='NA', assignmentId='NA', hitId='NA') {
+  
+  $("#loading").html('Loading trials... please wait. </br> <img src="img/preloader.gif">')
+  
+  // This calls server to run python generate trials (judements.py) script
+  // Then passes the generated trials to the experiment
+  $.ajax({
+      url: 'http://'+document.domain+':'+PORT+'/trials',
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({subjCode: subjCode}),
+      success: function (data) {
+          console.log(data);
+          $("#loading").remove();
+  
+          runExperiment(data.trials, subjCode, assignmentId, hitId, PORT, FULLSCREEN);
+      }
+  })
+}
+
 function disableScrollOnSpacebarPress () {
   window.onkeydown = function(e) {
     if (e.keyCode == 32 && e.target == document.body) {
@@ -9,7 +32,7 @@ function disableScrollOnSpacebarPress () {
 }
 
 // Function Call to Run the experiment
-export default (trials, subjCode='NA', assignmentId='NA', hitId='NA', PORT, FULLSCREEN) => {
+function runExperiment(trials, subjCode, assignmentId, hitId, PORT, FULLSCREEN) {
   disableScrollOnSpacebarPress();
 
   let timeline = [];
