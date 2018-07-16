@@ -65,11 +65,18 @@ export default (trials, subjCode, workerId, assignmentId, hitId, PORT, FULLSCREE
 
   timeline.push(instructions);
 
-  let trial_number = 1;
+  // keeps track of current trial progression
+  // and used for the progress bar
+  let progress_number = 1;
   let images = [];
   let num_trials = trials.length;
 
-  _.forEach(trials, trial => {
+  trials.forEach((trial, index) => {
+    // In contrast to progress_number,
+    // trial_number is used for recording
+    // responses
+    const trial_number = index + 1;
+
     images.push("images/" + trial.pic1 + ".png");
     images.push("images/" + trial.pic2 + ".png");
 
@@ -108,7 +115,7 @@ export default (trials, subjCode, workerId, assignmentId, hitId, PORT, FULLSCREE
       rightPic = trial.pic2;
     }
 
-    let stimulus = () => `
+    let stimulus = `
         <h5 style="text-align:center;margin-bottom:20%;margin-top:0;">Trial ${trial_number} of ${num_trials}</h5>
         <div style="width:100%;">
             <div style="width:50%;text-align:center;float:left;">
@@ -211,8 +218,8 @@ export default (trials, subjCode, workerId, assignmentId, hitId, PORT, FULLSCREE
       },
       
       on_finish: function() {
-        trial_number++;
-        jsPsych.setProgressBar((trial_number - 1) / num_trials);
+        jsPsych.setProgressBar((progress_number - 1) / num_trials);
+        progress_number++;
       },
     };
     timeline.push(breakTrial);
