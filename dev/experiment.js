@@ -9,7 +9,7 @@ function disableScrollOnSpacebarPress () {
 }
 
 // Function Call to Run the experiment
-export default (trials, subjCode, workerId, assignmentId, hitId, PORT, FULLSCREEN) => {
+export default (trials, subjCode='NA', workerId='NA', assignmentId='NA', hitId='NA', PORT, FULLSCREEN) => {
   disableScrollOnSpacebarPress();
 
   let timeline = [];

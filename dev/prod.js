@@ -10,9 +10,9 @@ $(document).ready(function(){
         // DEFINE workerId, hitId, assignmentId HERE
         //////////////////////////////////////////
         let subjCode = $.urlParam('workerId') || 'unknown';
-        let workerId = 'workerId';
-        let assignmentId = 'assignmentId';
-        let hitId = 'hitId';
+        let workerId = undefined;
+        let assignmentId = undefined;
+        let hitId = undefined;
 
         $("#loading").html('Loading trials... please wait. </br> <img src="img/preloader.gif">')
 
