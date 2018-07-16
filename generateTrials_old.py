@@ -36,7 +36,7 @@ def circularList(lst,seed):
 
 						
 def generateTrials(runTimeVars,runTimeVarsOrder):
-	testFile = open('trials/'+runTimeVars['subjCode']+ '_trials.csv','w')
+	testFile = open('trials/'+runTimeVars['workerId']+ '_trials.csv','w')
 	print runTimeVarsOrder
 	header = separator.join(runTimeVarsOrder) + separator + separator.join(("Category", "Subcategory1","Subcategory2","firstStimPosition", "secondStimPosition","pic1","pic2"))
 	print >>testFile, header
@@ -203,6 +203,6 @@ def generateTrials(runTimeVars,runTimeVarsOrder):
 		print >>testFile, trialData
 							
 if __name__ == "__main__":
-    trialList = generateTrials({'subjCode':sys.argv[1], 'seed':19},['subjCode', 'seed'])
+    trialList = generateTrials({'workerId':sys.argv[1], 'seed':19},['workerId', 'seed'])
 
 	

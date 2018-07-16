@@ -49,14 +49,14 @@ app.listen(app.get("port"), function() {
 // POST endpoint for requesting trials
 app.post("/trials", function(req, res) {
   console.log("trials post request received");
-  let subjCode = req.body.subjCode;
-  console.log("subjCode received is " + subjCode);
+  let workerId = req.body.workerId;
+  console.log("workerId received is " + workerId);
 
-  if (fs.existsSync("trials/" + subjCode + "_trials.csv")) {
+  if (fs.existsSync("trials/" + workerId + "_trials.csv")) {
     let trials = [];
     // Reads generated trial csv file
     csv()
-      .fromFile("trials/" + subjCode + "_trials.csv")
+      .fromFile("trials/" + workerId + "_trials.csv")
       // Push all trials to array
       .on("json", jsonObj => {
         trials.push(jsonObj);
@@ -71,15 +71,15 @@ app.post("/trials", function(req, res) {
         console.log("finished parsing csv");
       });
   } else {
-    // Runs genTrial python script with subjCode arg
-    PythonShell.defaultOptions = { args: [subjCode] };
+    // Runs genTrial python script with workerId arg
+    PythonShell.defaultOptions = { args: [workerId] };
     PythonShell.run("generateTrials.py", function(err, results) {
       if (err) throw err;
       let trials = [];
   
       // Reads generated trial csv file
       csv()
-        .fromFile("trials/" + subjCode + "_trials.csv")
+        .fromFile("trials/" + workerId + "_trials.csv")
         // Push all trials to array
         .on("json", jsonObj => {
           trials.push(jsonObj);
@@ -102,7 +102,7 @@ app.post("/trials", function(req, res) {
 function writeToJSON(req, res, next, folderName) {
   // Write response to json
   let response = req.body;
-  let path = `${folderName}/${response.subjCode}_${folderName}.json`;
+  let path = `${folderName}/${response.workerId}_${folderName}.json`;
   if (!fs.existsSync(path)) {
     fs.writeFileSync(path, JSON.stringify({ [folderName]: [] }));
   }
@@ -126,7 +126,7 @@ function writeToJSON(req, res, next, folderName) {
 function writeToCSV(req, res, next, folderName) {
   // Parses the trial response data to csv
   let response = req.body;
-  let path = `${folderName}/${response.subjCode}_${folderName}.csv`;
+  let path = `${folderName}/${response.workerId}_${folderName}.csv`;
   console.log('Request body written to ' + path);
   let headers = Object.keys(response);
   if (!fs.existsSync(path)) writer = csvWriter({ headers: headers });
