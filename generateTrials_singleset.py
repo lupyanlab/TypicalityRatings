@@ -98,7 +98,7 @@ def generateTrials(runTimeVars,runTimeVarsOrder):
 
 
 	stim_lists = map(createCombos, images_list)
- 	catch_lists = ['catcha', 'catch1', 'catchb', 'catch2', 'catchc', 'catch3']
+ 	catch_lists = ['catch_a', 'catch_1', 'catch_b', 'catch_2', 'catch_c', 'catch_3']
 	
 	for curIter in range(1):
 			for cur_stim_list in stim_lists:
