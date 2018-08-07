@@ -98,8 +98,8 @@ def generateTrials(runTimeVars,runTimeVarsOrder):
 
 
 	stim_lists = map(createCombos, images_list)
-	catch_lists = ['catch_a', 'catch_1', 'catch_b', 'catch_2', 'catch_c', 'catch_3']
-
+ 	catch_lists = ['catcha', 'catch1', 'catchb', 'catch2', 'catchc', 'catch3']
+	
 	for curIter in range(1):
 			for cur_stim_list in stim_lists:
 				for curCombination in cur_stim_list:
@@ -115,27 +115,32 @@ def generateTrials(runTimeVars,runTimeVarsOrder):
 
 	trialList = trialList[:224]
 	
+	random.shuffle(trialList)
+	
+	first30 = trialList[:30]
+	rest = trialList[30:224]
+	trialList =[]
+	
 	for curIter in range(1):
 			for cur_stim_list in catch_lists:
 				for curCombination in cur_stim_list:
 				   curIsSimult=1
-				   pic1 = catch_lists[0]
-				   pic2 = catch_lists[1]
-				   pic3 = catch_lists[2]
-				   pic4 = catch_lists[3]
-				   pic5 = catch_lists[4]
-				   pic6 = catch_lists[5]
 				   curPosition = positionList.next() 
 				   subC1 = 'plain'
 				   subC2 = 'writing'
 				   maincata = 'Catch'
-				   trialList.append(separator.join((str(maincata), str(subC1), str(subC2), 'left', 'right', str(pic1),str(pic2))))
-				   trialList.append(separator.join((str(maincata), str(subC1), str(subC2), 'left', 'right', str(pic3),str(pic4))))
-				   trialList.append(separator.join((str(maincata), str(subC1), str(subC2), 'right', 'left', str(pic5),str(pic6))))
+				   trialList.append(separator.join((str(maincata), str(subC1), str(subC2), 'left', 'right', catch_lists[0],catch_lists[1])))
+				   trialList.append(separator.join((str(maincata), str(subC1), str(subC2), 'left', 'right', catch_lists[2],catch_lists[3])))
+				   trialList.append(separator.join((str(maincata), str(subC1), str(subC2), 'right', 'left', catch_lists[4],catch_lists[5])))
 	
-	trialList = trialList[:227]
+	trialList = trialList[:3]
+	trialList = trialList+rest
 	
 	random.shuffle(trialList)
+	
+	trialList = first30+trialList
+
+	
 
 	for curTrialList in trialList:
 		trialData = separator.join([str(runTimeVars[curRuntimeVar]) for curRuntimeVar in runTimeVarsOrder])+separator+curTrialList
