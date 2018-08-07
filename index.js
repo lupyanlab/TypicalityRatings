@@ -73,7 +73,7 @@ app.post("/trials", function(req, res) {
   } else {
     // Runs genTrial python script with workerId arg
     PythonShell.defaultOptions = { args: [workerId] };
-    PythonShell.run("generateTrials.py", function(err, results) {
+    PythonShell.run("generateTrials_singleset.py", function(err, results) {
       if (err) throw err;
       let trials = [];
   
