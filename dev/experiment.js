@@ -80,7 +80,7 @@ function runExperiment(trials, workerId, assignmentId, hitId, PORT, FULLSCREEN) 
     key_backward: 'backspace',
     pages: [
       `<p>On each page you will see two pictures from the same category e.g., two cats. Your task is simply to decide which of the two pictures is the best example of your idea or image of what the category is. The categories you will see are <b>cats, dogs, birds, fish, cars, trains, planes and boats</b>.
-      <p><b>Use the keys 1-5 to respond</b>. You will be asked to about 225 judgments. Estimated total time is 6-7 minutes. At the end, you will get a completion code. Please respond carefully. If you miss the attention checks, we may deny payment.
+      <p><b>Use the keys 1-5 to respond</b>. You will be asked to about 225 judgments. Please don't spend too much time on any one set of images. Estimated total time is 10-13 minutes. At the end, you will get a completion code. <br><br><b>Please respond carefully. If you miss the attention checks, we may deny payment.</b>
             </p> ${continue_space}`
     ]
   };
